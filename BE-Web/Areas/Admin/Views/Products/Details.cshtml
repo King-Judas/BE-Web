@@ -1,0 +1,38 @@
+﻿@model BE_Web.Models.Product
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Chi tiết sản phẩm</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Tên sản phẩm</dt>
+        <dd>@Html.DisplayFor(model => model.ProductName)</dd>
+
+        <dt>Danh mục</dt>
+        <dd>@Html.DisplayFor(model => model.Category.CategoryName)</dd>
+
+        <dt>Giá sản phẩm</dt>
+        <dd>@Html.DisplayFor(model => model.ProductPrice)</dd>
+
+        <dt>Mô tả</dt>
+        <dd>@Html.DisplayFor(model => model.ProductDecription)</dd>
+
+        <dt>Hình ảnh</dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.ProductImage))
+            {
+                <img src="@Model.ProductImage" alt="Product Image" style="width: 150px; height: 150px; object-fit: cover;" />
+            }
+        </dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.ProductID }, new { @class = "btn btn-warning" }) |
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+</p>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<BE_Web.Models.Product>
+
+@{
+    ViewBag.Title = "Trang chủ - MyStore";
+}
+
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-3">
+        <h3>Danh mục sản phẩm</h3>
+        <div class="list-group">
+            <a href="@Url.Action("Index", "Home")" class="list-group-item list-group-item-action">Tất cả sản phẩm</a>
+            @if (ViewBag.Categories != null)
+            {
+                foreach (var cat in ViewBag.Categories)
+                {
+                    <a href="@Url.Action("Index", "Home", new { categoryId = cat.CategoryID })" class="list-group-item list-group-item-action">
+                        @cat.CategoryName
+                    </a>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "form-inline mb-4", style = "margin-bottom: 20px;" }))
+        {
+            <div class="input-group" style="width: 100%;">
+                <input type="text" name="searchString" class="form-control" placeholder="Nhập tên sản phẩm cần tìm..." value="@Request.QueryString["searchString"]" />
+                <span class="input-group-btn" style="padding-left: 5px;">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </span>
+            </div>
+        }
+
+        <div class="row">
+            @if (Model.Count() == 0)
+            {
+                <div class="col-md-12">
+                    <p class="text-danger">Không tìm thấy sản phẩm nào phù hợp.</p>
+                </div>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-md-4" style="margin-bottom: 20px;">
+                        <div class="card h-100 border" style="padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            @if (!string.IsNullOrEmpty(item.ProductImage))
+                            {
+                                <img src="@item.ProductImage" class="card-img-top" alt="@item.ProductName" style="width: 100%; height: 180px; object-fit: cover; border-radius: 4px;" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/150" class="card-img-top" alt="No image" style="width: 100%; height: 180px; object-fit: cover;" />
+                            }
+                            <div class="card-body" style="margin-top: 10px;">
+                                <h5 class="card-title" style="font-size: 16px; font-weight: bold; min-height: 40px;">@item.ProductName</h5>
+                                <p class="card-text text-danger" style="font-weight: bold; color: #d9534f;">Giá: @item.ProductPrice.ToString("N0") VNĐ</p>
+                                <div>
+                                    @Html.ActionLink("Xem chi tiết", "Details", new { id = item.ProductID }, new { @class = "btn btn-info btn-sm" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@model BE_Web.Models.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Chi tiết đơn hàng #@Model.OrderID</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Mã khách hàng</dt>
+        <dd>@Html.DisplayFor(model => model.CustomerID)</dd>
+
+        <dt>Ngày đặt hàng</dt>
+        <dd>@Html.DisplayFor(model => model.OrderDate)</dd>
+
+        <dt>Tổng tiền</dt>
+        <dd>@Html.DisplayFor(model => model.TotalAmount)</dd>
+
+        <dt>Trạng thái thanh toán</dt>
+        <dd>@Html.DisplayFor(model => model.PaymentStatus)</dd>
+
+        <dt>Địa chỉ giao hàng</dt>
+        <dd>@Html.DisplayFor(model => model.AddressDelivery)</dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+</p>

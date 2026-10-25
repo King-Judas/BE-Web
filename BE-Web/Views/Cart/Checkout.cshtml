@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Thanh toán đơn hàng";
+}
+
+<h2 style="margin-top: 20px;">Thanh toán đơn hàng</h2>
+
+@using (Html.BeginForm("Checkout", "Cart", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-7">
+            <h4>Thông tin giao hàng</h4>
+            <hr />
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label><strong>Địa chỉ nhận hàng:</strong></label>
+                <input type="text" name="shippingAddress" class="form-control" required placeholder="Nhập số nhà, tên đường, phường/xã, quận/huyện..." />
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <button type="submit" class="btn btn-success btn-lg">Xác nhận đặt hàng</button>
+                <a href="@Url.Action("Index", "Cart")" class="btn btn-default btn-lg" style="margin-left: 10px;">Quay lại giỏ hàng</a>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <h4>Đơn hàng của bạn</h4>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>SL</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Session["Cart"] != null)
+                    {
+                        var cart = Session["Cart"] as List<BE_Web.Models.CartItem>;
+                        foreach (var item in cart)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.TotalPrice.ToString("N0") VNĐ</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <hr />
+            <h4>Tổng tiền: <span style="color: #d9534f;">@(ViewBag.Total != null ? ((decimal)ViewBag.Total).ToString("N0") : "0") VNĐ</span></h4>
+        </div>
+    </div>
+}

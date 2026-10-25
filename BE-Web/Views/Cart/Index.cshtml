@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BE_Web.Models.CartItem>
+
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+}
+
+<h2 style="margin-top: 20px;">Giỏ hàng của bạn</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning" style="margin-top: 20px;">
+        Giỏ hàng của bạn đang trống. <a href="@Url.Action("Index", "Home")" class="alert-link">Tiếp tục mua sắm</a>
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped" style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="width: 100px;">
+                        @if (!string.IsNullOrEmpty(item.ProductImage))
+                        {
+                            <img src="@item.ProductImage" alt="@item.ProductName" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/80" alt="No image" style="width: 80px; height: 80px; object-fit: cover;" />
+                        }
+                    </td>
+                    <td style="vertical-align: middle; font-weight: bold;">@item.ProductName</td>
+                    <td style="vertical-align: middle;">@item.ProductPrice.ToString("N0") VNĐ</td>
+                    <td style="vertical-align: middle;">@item.Quantity</td>
+                    <td style="vertical-align: middle; color: #d9534f; font-weight: bold;">@item.TotalPrice.ToString("N0") VNĐ</td>
+                    <td style="vertical-align: middle;">
+                        @Html.ActionLink("Xóa", "RemoveFromCart", new { id = item.ProductID }, new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-6">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default">Tiếp tục mua sắm</a>
+        </div>
+        <div class="col-md-6 text-right" style="text-align: right;">
+            <h3>Tổng cộng: <span style="color: #d9534f;">@(ViewBag.Total != null ? ((decimal)ViewBag.Total).ToString("N0") : "0") VNĐ</span></h3>
+            <div style="margin-top: 15px;">
+                <a href="@Url.Action("Checkout", "Cart")" class="btn btn-success btn-lg">Tiến hành thanh toán / Đặt hàng</a>
+            </div>
+        </div>
+    </div>
+}
